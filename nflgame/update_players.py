@@ -455,13 +455,13 @@ def run():
 
         def fetch(t):
             gid, purl = t
-            resp, content = new_http().request(purl, 'GET')
-            if resp['status'] != '200':
-                if resp['status'] == '404':
+            resp, content = requests.get(purl, 'GET')
+            if resp.status_code != '200':
+                if resp.status_code == '404':
                     return gid, purl, False
                 else:
                     return gid, purl, None
-            return gid, purl, content
+            return gid, purl, resp.content
         for i, (gid, purl, html) in enumerate(pool.imap(fetch, gids), 1):
             progress(i, len(gids))
             more_meta = meta_from_profile_html(html)
