@@ -117,13 +117,19 @@ def gsis_id(profile_url):
         return None
     return gid
 
-
 def roster_soup(team):
-    resp = requests.get(urls['roster'], params={'team':team})
-    if resp.status_code != 200:
+    try:
+        session = requests.Session()
+        session.max_redirects = 60
+        resp = requests.get(urls['roster'], params={'team':team})
+        print(resp.url)
+        if resp.status_code != 200:
+            return None
+        session.cookies.clear()
+        return BeautifulSoup(resp.text, PARSER)
+    except Exception:
+        print('team error: {}'.format(team))
         return None
-    return BeautifulSoup(resp.text, PARSER)
-
 
 def try_int(s):
     try:
@@ -244,7 +250,7 @@ def meta_from_profile_html(html):
 
 def players_from_games(existing, games):
     for g in games:
-        if g is None:
+        if g is None or not g.gcJsonAvailable:
             continue
         for d in g.drives:
             for p in d.plays:
@@ -455,13 +461,13 @@ def run():
 
         def fetch(t):
             gid, purl = t
-            resp, content = new_http().request(purl, 'GET')
-            if resp['status'] != '200':
-                if resp['status'] == '404':
+            resp = requests.get(purl)
+            if resp.status_code != '200':
+                if resp.status_code == '404':
                     return gid, purl, False
                 else:
                     return gid, purl, None
-            return gid, purl, content
+            return gid, purl, resp.text
         for i, (gid, purl, html) in enumerate(pool.imap(fetch, gids), 1):
             progress(i, len(gids))
             more_meta = meta_from_profile_html(html)
