@@ -126,7 +126,7 @@ teams = [
     ['GB', 'Green Bay', 'Packers', 'Green Bay Packers', 'GNB'],
     ['HOU', 'Houston', 'Texans', 'Houston Texans'],
     ['IND', 'Indianapolis', 'Colts', 'Indianapolis Colts'],
-    ['JAC', 'Jacksonville', 'Jaguars', 'Jacksonville Jaguars', 'JAX'],
+    ['JAX', 'Jacksonville', 'Jaguars', 'Jacksonville Jaguars', 'JAC'],
     ['KC', 'Kansas City', 'Chiefs', 'Kansas City Chiefs', 'KAN'],
     ['LA', 'Los Angeles', 'Rams', 'Los Angeles Rams', 'LAR'],
     ['SD', 'San Diego', 'Chargers', 'San Diego Chargers', 'SDG'],
