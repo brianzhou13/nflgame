@@ -119,15 +119,12 @@ def gsis_id(profile_url):
 
 def roster_soup(team):
     try:
-        session = requests.Session()
-        session.max_redirects = 60
         resp = requests.get(urls['roster'], params={'team':team})
-        print(resp.url)
         if resp.status_code != 200:
             return None
-        session.cookies.clear()
         return BeautifulSoup(resp.text, PARSER)
-    except Exception:
+    except Exception as err:
+        print(err)
         print('team error: {}'.format(team))
         return None
 
@@ -353,7 +350,8 @@ def run():
         players = {}
 
         # Grab players one game a time to avoid obscene memory requirements.
-        for _, schedule in nflgame.sched.games.values():
+        games = nflgame.sched.games.values()
+        for schedule in games:
             # If the game is too far in the future, skip it...
             if nflgame.live._game_datetime(schedule) > nflgame.live._now():
                 continue
@@ -403,6 +401,7 @@ def run():
 
     def fetch(team):
         return team, roster_soup(team)
+
     for i, (team, soup) in enumerate(pool.imap(fetch, teams), 1):
         progress(i, len(teams))
 
