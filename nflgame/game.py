@@ -355,13 +355,6 @@ class Game (object):
         self.gcJsonAvailable = self.data['gcJsonAvailable']
 
         if(self.data['gcJsonAvailable']):
-            # DEBUGGING
-            print('home {}'.format(self.home))
-            print(self.data['home']['stats']['team'])
-            print('away {}'.format(self.away))
-            print(self.data['away']['stats']['team'])
-
-
             self.stats_home = _json_team_stats(self.data['home']['stats']['team'])
             self.stats_away = _json_team_stats(self.data['away']['stats']['team'])
 
