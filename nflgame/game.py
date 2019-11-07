@@ -273,6 +273,8 @@ class Game (object):
         if game_starting_soon:
             try:
                 rawData = _get_json_data(eid, fpath)
+                if rawData is None:
+                    return None
             except urllib.error.URLError:
                 # @TODO - find when this happens, likely never as ln# 868 catches
                 # 404 errors and returns None
