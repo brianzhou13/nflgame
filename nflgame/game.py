@@ -142,10 +142,10 @@ class PossessionTime (object):
 
     def __ge__(self,other):
         return self.total_seconds() >= other.total_seconds()
-    
+
     def __le__(self,other):
         return self.total_seconds() <= other.total_seconds()
-    
+
     def __eq__(self,other):
         return self.total_seconds() == other.total_seconds()
 
@@ -200,7 +200,7 @@ class GameClock (object):
             else:
                 self.qtr = 'Pregame'
 
-    
+
     @property
     def quarter(self):
         return self.__qtr
@@ -355,6 +355,13 @@ class Game (object):
         self.gcJsonAvailable = self.data['gcJsonAvailable']
 
         if(self.data['gcJsonAvailable']):
+            # DEBUGGING
+            print('home {}'.format(self.home))
+            print(self.data['home']['stats']['team'])
+            print('away {}'.format(self.away))
+            print(self.data['away']['stats']['team'])
+
+
             self.stats_home = _json_team_stats(self.data['home']['stats']['team'])
             self.stats_away = _json_team_stats(self.data['away']['stats']['team'])
 
@@ -898,7 +905,7 @@ def _get_json_data(eid=None, fpath=None):
 def _infer_gc_json_available(eid):
     """
     Check to see if the game-center json even has a chance to be available, i.e.
-    the game starts in <= 10 minutes.  This is used to prevent superfluous calls 
+    the game starts in <= 10 minutes.  This is used to prevent superfluous calls
     to the nfl api.
 
     returns a tuple - True/False if the game is about to start and the schedule data
