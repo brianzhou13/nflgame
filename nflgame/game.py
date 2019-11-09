@@ -887,7 +887,9 @@ def _get_json_data(eid=None, fpath=None):
         return gzip.open(fpath).read()
     try:
         logger.info("_get_json_data: firing request")
-        return urllib.request.urlopen(_json_base_url % (eid, eid), timeout=5).read()
+        return nflcom_http_wrapper(_json_base_url % (eid, eid), timeout=5)
+
+        # return urllib.request.urlopen(_json_base_url % (eid, eid), timeout=5).read()
     except urllib.error.HTTPError:
         pass
     except socket.timeout:
@@ -895,6 +897,18 @@ def _get_json_data(eid=None, fpath=None):
 
     logger.info("_get_json_data: Failed request, returning None")
     return None
+
+def nflcom_http_wrapper( url, timeout = 0 ) :
+
+    resp = urllib.request.urlopen( url, timeout = timeout )
+    encoding = resp.info().get( 'Content-Encoding', None )
+    if encoding == 'gzip' :
+        import zlib
+        page = zlib.decompress( resp.read(), 16 + zlib.MAX_WBITS )
+    else :
+        page = resp.read()
+    return page
+
 
 
 def _infer_gc_json_available(eid):
