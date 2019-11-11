@@ -492,7 +492,10 @@ class Game (object):
             self.players = nflgame.seq.GenPlayerStats(self.__players)
             return self.players
         if name == 'drives':
-            self.__drives = _json_drives(self, self.home, self.data['drives'])
+            try:
+                self.__drives = _json_drives(self, self.home, self.data['drives'])
+            except Exception:
+                return []
             self.drives = nflgame.seq.GenDrives(self.__drives)
             return self.drives
         raise AttributeError
@@ -843,6 +846,9 @@ def _json_game_player_stats(game, data):
     players = OrderedDict()
     for team in ('home', 'away'):
         for category in nflgame.statmap.categories:
+            if not data[team] or not data[team].get('stats'):
+                continue
+
             if category not in data[team]['stats']:
                 continue
             for pid, raw in data[team]['stats'][category].items():
