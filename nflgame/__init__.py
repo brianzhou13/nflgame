@@ -372,8 +372,10 @@ def combine_play_stats(games):
     """
     if not games:
         return []
-    return reduce(lambda p1, p2: p1 + p2,
-                  [g.drives.players() for g in games if g is not None])
+
+    reduced_games = [g.drives.players() for g in games if g is not None and g.drives]
+    return reduce(
+        lambda p1, p2: p1 + p2, reduced_games)
 
 
 def combine_max_stats(games):

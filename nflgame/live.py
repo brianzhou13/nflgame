@@ -186,7 +186,7 @@ def run(callback, active_interval=15, inactive_interval=900, wakeup_time=900, st
 
     When in the inactive mode (see live module description), inactive_interval
     specifies the number of seconds to wait between checking whether any games
-    have started or are about to start.  wakeup_time is used to add games to 
+    have started or are about to start.  wakeup_time is used to add games to
     the active list.
 
     With the default parameters, run will never stop. However, you may set
@@ -243,8 +243,8 @@ def _run_active(callback, games):
     Then each game is added to one of two lists: active and completed, which
     are passed as the first and second parameters to callback. A game is
     put in the active list if it's still being played, or a bout to play
-    and into the completed list if it has finished. In the latter case, 
-    it is added to a global store of completed games and will never be 
+    and into the completed list if it has finished. In the latter case,
+    it is added to a global store of completed games and will never be
     passed to callback again.
     """
     global _last
@@ -286,9 +286,9 @@ def _run_active(callback, games):
 
 def _run_inactive(games):
     """
-    The inactive mode simply checks if there are any active games (start w/in 
-    wakeup_time). If there are, inactive mode needs to stop and transition to 
-    active mode---thus we return False. If there aren't any active games, then 
+    The inactive mode simply checks if there are any active games (start w/in
+    wakeup_time). If there are, inactive mode needs to stop and transition to
+    active mode---thus we return False. If there aren't any active games, then
     the inactive mode should continue, where we return True.
 
     i.e. There are no active games, we go back to sleep.
@@ -364,5 +364,5 @@ def _update_week_number():
         _cur_year = curWeekJson['seasonId']
         _cur_season_phase = curWeekJson['seasonType']
 
-    # return the time for calculating when to check 
+    # return the time for calculating when to check
     return time.time()
